@@ -26,11 +26,11 @@ class LogStash::Outputs::InfluxDB < LogStash::Outputs::Base
   # The retention policy to use
   config :retention_policy, :validate => :string, :default => "autogen"
 
-  # The hostname or IP address to reach your InfluxDB instance
-  config :host, :validate => :string, :required => true
+  # The URL to reach your InfluxDB instance
+  config :url, :validate => :string, :required => true
 
   # The port for InfluxDB
-  config :port, :validate => :number, :default => 8086
+  # config :port, :validate => :number, :default => 8086
 
   # The user who has access to the named database
   config :user, :validate => :string, :default => nil
@@ -137,7 +137,7 @@ class LogStash::Outputs::InfluxDB < LogStash::Outputs::Base
     )
     @auth_method = @user.nil? ? 'none'.freeze  : "params".freeze 
     
-    @influxdbClient = InfluxDB::Client.new host: @host, port: @port, time_precision: @time_precision, use_ssl: @ssl, verify_ssl: false, retry: @max_retries, initial_delay: @initial_delay, auth_method: @auth_method, username: @user, password: @password.value
+    @influxdbClient = InfluxDB::Client.new url: @url, time_precision: @time_precision, use_ssl: @ssl, verify_ssl: false, retry: @max_retries, initial_delay: @initial_delay, auth_method: @auth_method, username: @user, password: @password.value
   end # def register
 
 
